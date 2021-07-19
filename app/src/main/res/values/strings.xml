@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">WeatherFlow</string>
+
+    <string name="temp_template">%d °C</string>
+    <string name="min_max_temp_template">%d…%d</string>
+    <string name="unknown_error">Unknown Error</string>
+</resources>
