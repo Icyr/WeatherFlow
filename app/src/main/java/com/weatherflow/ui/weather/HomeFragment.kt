@@ -34,15 +34,28 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun updateState(state: HomeViewState) = with(binding) {
         when (state) {
+            is HomeViewState.Empty -> {
+                homeProgress.isVisible = false
+                homeError.isVisible = false
+                homeCard.isVisible = false
+                homeRefresh.isRefreshing = false
+            }
             is HomeViewState.Loading -> {
                 homeProgress.isVisible = true
                 homeError.isVisible = false
                 homeCard.isVisible = false
+                homeRefresh.isRefreshing = false
+            }
+            is HomeViewState.Refreshing -> {
+                homeProgress.isVisible = false
+                homeError.isVisible = false
+                homeRefresh.isRefreshing = true
             }
             is HomeViewState.Content -> {
                 homeProgress.isVisible = false
                 homeError.isVisible = false
                 homeCard.isVisible = true
+                homeRefresh.isRefreshing = false
                 locationName.text = state.locationName
                 temp.text = state.temp
                 tempMinMax.text = state.tempMinMax
@@ -53,8 +66,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 homeProgress.isVisible = false
                 homeError.isVisible = true
                 homeCard.isVisible = false
+                homeRefresh.isRefreshing = false
                 homeError.text = state.message
             }
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.homeRefresh.setOnRefreshListener {
+            viewModel.refresh()
         }
     }
 }
